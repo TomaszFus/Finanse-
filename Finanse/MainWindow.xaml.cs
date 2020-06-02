@@ -23,6 +23,8 @@ namespace Finanse
     {
         int User_ID; //id uzytkownika przekazane przez konstruktor
         Transaction transaction = new Transaction();
+        User user = new User();
+
 
         public MainWindow(string UserLogin, int UserID)
         {
@@ -40,6 +42,7 @@ namespace Finanse
             Grid3.Visibility = Visibility.Hidden;
 
             ShowTransListView();
+            GetAvailableFunds();
                                    
 
         }
@@ -49,6 +52,7 @@ namespace Finanse
             Grid1.Visibility = Visibility.Visible;
             Grid2.Visibility = Visibility.Hidden;
             Grid3.Visibility = Visibility.Hidden;
+            
         }
         private void Bt_page2_Click(object sender, RoutedEventArgs e)
         {
@@ -78,6 +82,9 @@ namespace Finanse
         {
             AddTransaction();
             ShowTransListView();
+            SetAvailableFunds();
+            GetAvailableFunds();
+
         }
 
 
@@ -192,8 +199,67 @@ namespace Finanse
         }
 
 
-       
+        /// <summary>
+        /// Metoda wyswietlajaca dostepne sroki
+        /// </summary>
+        public void GetAvailableFunds()
+        {
+            try
+            {
+                using(FinanseEntities db=new FinanseEntities())
+                {
+                    user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
+                    txb_test.Text = user.AvailableFunds.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                //throw;
+            }
+        }
 
-        
+
+        /// <summary>
+        /// Metoda modyfikujaca dostepne srodki dostepne srodki
+        /// </summary>
+        public void SetAvailableFunds()
+        {
+            double _avFunds = user.AvailableFunds;
+            double _amount = transaction.Amount;
+            double _newAFunds = 0;
+
+
+            if (transaction.Type == "wydatek")
+            {
+                _newAFunds = _avFunds - _amount;
+            }
+            else
+            {
+                _newAFunds = _avFunds + _amount;
+            }
+
+            try
+            {
+                using (FinanseEntities db = new FinanseEntities())
+                {
+                    user=db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
+                    user.AvailableFunds = _newAFunds;
+                    db.SaveChanges();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                //throw;
+            }
+
+        }
+
+        private void ListViewTransaction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show("test");
+        }
     }
 }

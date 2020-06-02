@@ -47,13 +47,14 @@
 
         <!-- ekran główny -->
         <Grid Name="Grid1" Background="Bisque" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
+            <TextBlock Name="txb_test" HorizontalAlignment="Left" Margin="206,163,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
 
         </Grid>
 
         <!-- transakcje -->
-        <Grid Name="Grid2" Background="Red" HorizontalAlignment="Stretch" Margin="200,72,0,0">
+        <Grid Name="Grid2" Background="Red" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Visible">
             <Grid HorizontalAlignment="Left" Width="400" Background="red">
-                <ListView Name="ListViewTransaction" Margin="15">
+                <ListView Name="ListViewTransaction" Margin="15" SelectionChanged="ListViewTransaction_SelectionChanged">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Nazwa" Width="100" DisplayMemberBinding="{Binding Path=Name}"/>
@@ -103,7 +104,18 @@
         <!-- 3 -->
 
         <Grid Name="Grid3" Background="Green" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
-
+            <Grid HorizontalAlignment="Left" Width="400" Background="Red">
+                <ListView Name="ListViewPaRe" Margin="15">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Nazwa" Width="100" DisplayMemberBinding="{Binding Path=Name}"/>
+                            <GridViewColumn Header="Kwota" Width="65" DisplayMemberBinding="{Binding Path=Amount}"/>
+                            <GridViewColumn Header="Data" Width="70" DisplayMemberBinding="{Binding Path=Date}"/>
+                            <GridViewColumn Header="Rodzaj" Width="60" DisplayMemberBinding="{Binding Path=Type}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
         </Grid>
 
 
