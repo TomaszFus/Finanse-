@@ -78,7 +78,6 @@
     <Compile Include="Transaction.cs">
       <DependentUpon>FinanseModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="TransactionClass.cs" />
     <Compile Include="User.cs">
       <DependentUpon>FinanseModel.tt</DependentUpon>
     </Compile>

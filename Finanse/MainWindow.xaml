@@ -8,7 +8,7 @@
         Title="MainWindow" Height="550" Width="950" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid >
         <!-- menu boczne -->
-        <Grid Width="200" HorizontalAlignment="Left" Background="GreenYellow">
+        <Grid Width="200" HorizontalAlignment="Left" Background="#85bb65">
 
 
 
@@ -29,9 +29,11 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="MENU"  TextAlignment="Center" FontSize="40" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Height="54" Margin="0,15"/>
-            <Button Name="Bt_page1" Content="Ekran Główny" Background="White" BorderBrush="Black" FontSize="20" Grid.Column="0" Grid.Row="1" BorderThickness="1,1,1,0" Click="Bt_page1_Click"/>
-            <Button Name="Bt_page2" Content="Transakcje" Background="White" BorderBrush="Black" FontSize="20" Grid.Column="0" Grid.Row="2" BorderThickness="1,1,1,0" Click="Bt_page2_Click"/>
-            <Button Name="Bt_page3" Content="Pozyczanie" Background="White" BorderBrush="Black" FontSize="20" Grid.Column="0" Grid.Row="3" BorderThickness="1,1,1,1" Click="Bt_page3_Click"/>
+            <Button Name="Bt_page1" Content="Transakcje" Background="White" BorderBrush="Black" FontSize="20" Grid.Column="0" Grid.Row="1" BorderThickness="1,1,1,0" Click="Bt_page1_Click"/>
+            <Button Name="Bt_page2" Background="White" BorderBrush="Black" FontSize="20" Grid.Column="0" Grid.Row="2" BorderThickness="1,1,1,0" Click="Bt_page2_Click">
+                <TextBlock TextAlignment="Center"> Należności   <LineBreak/>i<LineBreak/>zobowiązania</TextBlock>
+            </Button>
+            <Button Name="Bt_page3" Content="Klakulator lokat" Background="White" BorderBrush="Black" FontSize="20" Grid.Column="0" Grid.Row="3" BorderThickness="1,1,1,1" Click="Bt_page3_Click"/>
 
 
 
@@ -40,19 +42,23 @@
         </Grid>
 
         <!-- pasek górny -->
-        <Grid Background="Blue" VerticalAlignment="Top" Margin="200,0,0,0" Height="72">
-            <Label Name="Lb_LoginUser" Content="" Background="White" Margin="0,20,100,20" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
-            <Button Name="Bt_LogOut" Margin="500,20,20,20" Width="70" Content="Wyloguj"  Click="Bt_LogOut_Click" HorizontalAlignment="Right"/>
+        <Grid Background="#85bb65" VerticalAlignment="Top" Margin="200,0,0,0" Height="72">
+            <Label Name="Lb_LoginUser" Content="" Margin="0,4,83,36" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+            <Button Name="Bt_LogOut" Margin="0,4,8,36" Width="70" Content="Wyloguj"  Click="Bt_LogOut_Click" HorizontalAlignment="Right"/>
+            <Label Content="Twoje środki:" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top"/>
+            <Label Name="Lb_AvFunds" Content="" HorizontalAlignment="Left" Margin="104,10,0,0" VerticalAlignment="Top"/>
+            <Label Content="Wydatki" HorizontalAlignment="Left" Margin="20,41,0,0" VerticalAlignment="Top"/>
+            <Label Content="Przychody" HorizontalAlignment="Left" Margin="170,41,0,0" VerticalAlignment="Top"/>
+            <Label Name="Lb_wydatki" Content="" HorizontalAlignment="Left" Margin="78,41,0,0" VerticalAlignment="Top"/>
+            <Label Name="Lb_przychody" Content="" HorizontalAlignment="Left" Margin="239,41,0,0" VerticalAlignment="Top"/>
+            <Label Content="Bilans" HorizontalAlignment="Left" Margin="320,41,0,0" VerticalAlignment="Top"/>
+            <Label Name="Lb_bilans" Content="" HorizontalAlignment="Left" Margin="366,41,0,0" VerticalAlignment="Top"/>
         </Grid>
 
-        <!-- ekran główny -->
-        <Grid Name="Grid1" Background="Bisque" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
-            <TextBlock Name="txb_test" HorizontalAlignment="Left" Margin="206,163,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
 
-        </Grid>
 
         <!-- transakcje -->
-        <Grid Name="Grid2" Background="Red" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Visible">
+        <Grid Name="Grid1" Background="Red" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
             <Grid HorizontalAlignment="Left" Width="400" Background="red">
                 <ListView Name="ListViewTransaction" Margin="15" SelectionChanged="ListViewTransaction_SelectionChanged">
                     <ListView.View>
@@ -92,20 +98,20 @@
                 <RadioButton Name="RadioB_Income" Content="Przychód" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="165,0,0,0" Grid.Row="2"/>
                 <Label Name="Lb_TypeError" Content="Label" HorizontalAlignment="Left" Margin="184,56,0,0" VerticalAlignment="Top" Grid.Row="2" Foreground="Red" Visibility="Collapsed"/>
                 <Button Name="Bt_AddTrans" Content="Dodaj" Margin="60,0,175,0" VerticalAlignment="Center" Grid.Row="4" Click="Bt_AddTrans_Click"/>
-                <Button Content="Wyczyść" Margin="175,0,60,0" VerticalAlignment="Center" Grid.Row="4"/>
+                <Button Name="Bt_ClearTrans" Content="Wyczyść" Margin="175,0,60,0" VerticalAlignment="Center" Grid.Row="4" Click="Bt_ClearTrans_Click"/>
 
 
             </Grid>
-            
+
 
         </Grid>
 
 
-        <!-- 3 -->
+        <!-- 2 -->
 
-        <Grid Name="Grid3" Background="Green" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
+        <Grid Name="Grid2" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Visible">
             <Grid HorizontalAlignment="Left" Width="400" Background="Red">
-                <ListView Name="ListViewPaRe" Margin="15">
+                <ListView Name="ListViewPR" Margin="15">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Nazwa" Width="100" DisplayMemberBinding="{Binding Path=Name}"/>
@@ -116,23 +122,53 @@
                     </ListView.View>
                 </ListView>
             </Grid>
+            <Grid HorizontalAlignment="Stretch" Margin="400,0,0,0">
+                <Label Content="Nazwa" HorizontalAlignment="Left" Margin="28,88,0,0" VerticalAlignment="Top"/>
+                <Label Content="Kwota" HorizontalAlignment="Left" Margin="28,163,0,0" VerticalAlignment="Top"/>
+                <Label Content="Opis (opcjonalnie)" HorizontalAlignment="Left" Margin="28,218,0,0" VerticalAlignment="Top"/>
+                <TextBox Name="TxB_PR_Name" HorizontalAlignment="Left" Height="23" Margin="161,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                <Label Name="Lb_PRNameError" Content="" HorizontalAlignment="Left" Margin="161,115,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
+                <TextBox Name="TxB_PR_Amount" HorizontalAlignment="Left" Height="23" Margin="161,167,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                <Label Name="Lb_PRAmountError" Content="" HorizontalAlignment="Left" Margin="161,191,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
+                <TextBox Name="TxB_PR_Desc" HorizontalAlignment="Left" Height="23" Margin="161,222,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                <RadioButton Name="RadioB_PR_Receivable" Content="Należność" HorizontalAlignment="Left" Margin="48,279,0,0" VerticalAlignment="Top"/>
+                <RadioButton Name="RadioB_PR_Payables" Content="Zobowiązanie" HorizontalAlignment="Left" Margin="171,279,0,0" VerticalAlignment="Top"/>
+                <Label Name="Lb_PRTypeError" Content="" HorizontalAlignment="Left" Margin="48,299,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
+                <Button Name="Bt_AddPR" Content="Zatwierdź" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="48,339,0,0" Click="Bt_AddPR_Click"/>
+                <Button Name="Bt_ClearPR" Content="Wyczyść" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="188,339,0,0" Click="Bt_ClearPR_Click"/>
+                <Button Name="Bt_Remove" Content="Zakończ" HorizontalAlignment="Left" Margin="126,389,0,0" VerticalAlignment="Top" Width="75"  Click="Bt_Remove_Click"/>
+            </Grid>
+            
         </Grid>
 
 
+        <!-- 3 -->
+        <Grid Name="Grid3" Background="Bisque" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
+            <Label Content="Kwota lokaty" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,109,0,0"/>
+            <Label Content="Okres lokaty" HorizontalAlignment="Left" Margin="60,155,0,0" VerticalAlignment="Top"/>
+            <Label Content="Oprocentowanie" HorizontalAlignment="Left" Margin="60,236,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="TxB_DepositAmount" HorizontalAlignment="Left" Height="23" Margin="197,113,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox Name="TxB_DepositPeriod" HorizontalAlignment="Left" Height="23" Margin="197,159,0,0" TextWrapping="Wrap" Text="{Binding ElementName=Slider, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+            <TextBox Name="TxB_RateOfInterest" HorizontalAlignment="Left" Height="23" Margin="197,240,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <Button Name="Bt_Calculate" Content="Oblicz" HorizontalAlignment="Left" Margin="138,304,0,0" VerticalAlignment="Top" Width="75" Click="Bt_Calculate_Click"/>
+            <Label Content="Orientacyjna kwota do wypłaty&#xD;&#xA;" HorizontalAlignment="Left" Margin="376,108,0,0" VerticalAlignment="Top"/>
+            <Label Content="Orientacyjna kwota odsetek" HorizontalAlignment="Left" Margin="376,154,0,0" VerticalAlignment="Top"/>
+            <Label Content="Orientacyjna kwota podatku" HorizontalAlignment="Left" Margin="376,204,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="TxB_SumPaid" HorizontalAlignment="Left" Height="23" Margin="557,112,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+            <TextBox Name="TxB_AmountInterest" HorizontalAlignment="Left" Height="23" Margin="557,159,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+            <TextBox Name="TxB_AmountTax" HorizontalAlignment="Left" Height="23" Margin="557,207,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+            <Slider Maximum="24" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Name="Slider" Margin="60,188,427,209" />
+            <Label Name="Error1" Content="Label" HorizontalAlignment="Left" Margin="197,136,0,0" VerticalAlignment="Top" Visibility="Collapsed"/>
+            <Label Name="Error2" Content="Label" HorizontalAlignment="Left" Margin="197,182,0,0" VerticalAlignment="Top" Visibility="Collapsed"/>
+            <Label Name="Error3" Content="Label" HorizontalAlignment="Left" Margin="197,263,0,0" VerticalAlignment="Top" Visibility="Collapsed"/>
+        </Grid>
+        
 
 
 
-        <!--
-        <StackPanel Background="Red">
-            <TextBlock Text="MENU" Margin="0,50,0,0" TextAlignment="Center" FontSize="40"/>
-            <Button Content="Ekran Główny" Background="White" BorderBrush="Black" Margin="0,0,0,0" Height="50" FontSize="20"/>
-            <Button Content="Wydatki" Background="White" BorderBrush="Black" Margin="0,0,0,0" Height="50" FontSize="20"/>
-            <Button Content="Pozyczanie" Background="White" BorderBrush="Black" Margin="0,0,0,0" Height="50" FontSize="20"/>
-        </StackPanel>
-        <StackPanel Background="Green">
 
-        </StackPanel>
-        -->
+
+
 
 
     </Grid >

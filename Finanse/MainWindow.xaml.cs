@@ -23,7 +23,9 @@ namespace Finanse
     {
         int User_ID; //id uzytkownika przekazane przez konstruktor
         Transaction transaction = new Transaction();
+        PayablesReceivable payablesReceivable = new PayablesReceivable();
         User user = new User();
+        List<Transaction> transactionsList;
 
 
         public MainWindow(string UserLogin, int UserID)
@@ -43,7 +45,10 @@ namespace Finanse
 
             ShowTransListView();
             GetAvailableFunds();
-                                   
+            Balance();
+            ShowPayablesReceivable();
+
+
 
         }
         private void Bt_page1_Click(object sender, RoutedEventArgs e)
@@ -81,12 +86,118 @@ namespace Finanse
         private void Bt_AddTrans_Click(object sender, RoutedEventArgs e)
         {
             AddTransaction();
+            ClearTrans();
             ShowTransListView();
             SetAvailableFunds();
             GetAvailableFunds();
+            Balance();
 
         }
 
+        private void Bt_ClearTrans_Click(object sender, RoutedEventArgs e)
+        {
+            ClearTrans();
+        }
+
+        /// <summary>
+        /// Metoda wyswitlajaca szczegoly transakcji
+        /// </summary>
+        private void ListViewTransaction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ListViewTransaction.SelectedIndex >= 0)
+            {
+                var item = (ListBox)sender;
+                var trans = (Transaction)item.SelectedItem;
+                MessageBox.Show("Nazwa: " + trans.Name + " Kwota: " + trans.Amount + " Data: " + trans.Date.ToString("d") + " Opis: " + trans.Description);
+            }
+
+        }
+
+
+
+
+        private void Bt_AddPR_Click(object sender, RoutedEventArgs e)
+        {
+            AddPR();
+            ShowPayablesReceivable();
+            ClearPR();
+        }
+
+
+        private void Bt_Remove_Click(object sender, RoutedEventArgs e)
+        {
+            RemovePR();
+        }
+
+
+
+        private void Bt_ClearPR_Click(object sender, RoutedEventArgs e)
+        {
+            ClearPR();
+        }
+
+        private void Bt_Calculate_Click(object sender, RoutedEventArgs e)
+        {
+            double amount=0;
+            int time=0;
+            double interest=0;
+
+            if (String.IsNullOrWhiteSpace(TxB_DepositAmount.Text) || String.IsNullOrWhiteSpace(TxB_RateOfInterest.Text) || TxB_DepositPeriod.Text=="0")
+            {
+                MessageBox.Show("Podaj dane!");
+            }
+            else
+            {
+                Error1.Visibility = Error2.Visibility = Error3.Visibility = Visibility.Collapsed;
+                try
+                {
+                    amount = double.Parse(TxB_DepositAmount.Text);
+                }
+                catch (Exception ex)
+                {
+                    Error1.Visibility = Visibility.Visible;
+                    Error1.Content = "Nieprawidłowy format";
+                    //throw;
+                }
+                try
+                {
+                    time = int.Parse(TxB_DepositPeriod.Text);
+                }
+                catch (Exception ex)
+                {
+                    Error2.Visibility = Visibility.Visible;
+                    Error2.Content = ex.Message;
+                    //throw;
+                }
+
+                try
+                {
+                    interest = double.Parse(TxB_RateOfInterest.Text);
+                }
+                catch (Exception ex)
+                {
+                    Error3.Visibility = Visibility.Visible;
+                    Error3.Content = "Nieprawidłowy format";
+                    //throw;
+                }
+
+                Investment(amount, time, interest);
+            }
+            
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        /////////////////////////////   METODY  ///////////////////////////// 
 
 
 
@@ -99,6 +210,7 @@ namespace Finanse
             using (FinanseEntities db = new FinanseEntities())
             {
                 ListViewTransaction.ItemsSource = db.Transactions.Where(s=>s.UserID==User_ID).ToList();
+                transactionsList= db.Transactions.Where(s => s.UserID == User_ID).ToList();
             }
         }
 
@@ -199,8 +311,19 @@ namespace Finanse
         }
 
 
+        ///<summary>
+        /// Metoda czyszczaca pola w oknie transakcji
+        /// </summary>
+        public void ClearTrans()
+        {
+            TxB_Name.Text = TxB_Amount.Text = TxB_Desc.Text = null;
+            RadioB_Expense.IsChecked = false;
+            RadioB_Income.IsChecked = false;
+        }
+
+
         /// <summary>
-        /// Metoda wyswietlajaca dostepne sroki
+        /// Metoda wyswietlajaca dostepne srodki
         /// </summary>
         public void GetAvailableFunds()
         {
@@ -209,7 +332,7 @@ namespace Finanse
                 using(FinanseEntities db=new FinanseEntities())
                 {
                     user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
-                    txb_test.Text = user.AvailableFunds.ToString();
+                    Lb_AvFunds.Content = user.AvailableFunds.ToString();
                 }
             }
             catch (Exception ex)
@@ -257,9 +380,206 @@ namespace Finanse
 
         }
 
-        private void ListViewTransaction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        
+
+        ///<summary>
+        /// Metoda wyswietlajca bilans
+        /// </summary>
+        public void Balance()
         {
-            MessageBox.Show("test");
+            double wydatki=0;
+            double przychody=0;
+            double bilans = 0;
+            foreach (var item in transactionsList)
+            {
+                if(item.Type=="wydatek")
+                {
+                    wydatki += item.Amount;
+                }
+                else
+                {
+                    przychody += item.Amount;
+                }
+            }
+
+            Lb_wydatki.Content = wydatki;
+            Lb_przychody.Content = przychody;
+            bilans = przychody - wydatki;
+            Lb_bilans.Content = bilans;
         }
+
+
+        ///<summary>
+        ///Metoda dodająca należności i zobowiązania
+        /// </summary>
+        public void AddPR()
+        {
+            bool NameCheck = false;
+            bool AmountCheck = false;
+            bool TypeCheck = false;
+
+            if (String.IsNullOrWhiteSpace(TxB_PR_Name.Text))
+            {
+                Lb_PRNameError.Content = "Podaj nazwe transakcji";
+                Lb_PRNameError.Visibility = Visibility.Visible;
+                NameCheck = false;
+            }
+            else
+            {
+                Lb_PRNameError.Visibility = Visibility.Collapsed;
+                payablesReceivable.Name = TxB_PR_Name.Text.Trim();
+                NameCheck = true;
+            }
+
+
+            if (String.IsNullOrWhiteSpace(TxB_PR_Amount.Text))
+            {
+                Lb_PRAmountError.Content = "Podaj kwotę transakcji";
+                Lb_PRAmountError.Visibility = Visibility.Visible;
+                AmountCheck = false;
+            }
+            else
+            {
+                Lb_PRAmountError.Visibility = Visibility.Collapsed;
+                try
+                {
+                    payablesReceivable.Amount = double.Parse(TxB_PR_Amount.Text);
+                    AmountCheck = true;
+                }
+                catch (Exception ex)
+                {
+                    Lb_PRAmountError.Content = ex.Message;
+                    Lb_PRAmountError.Visibility = Visibility.Visible;
+                    AmountCheck = false;
+                    //throw;
+                }
+
+            }
+
+
+            if (RadioB_PR_Receivable.IsChecked == true)
+            {
+                Lb_PRTypeError.Visibility = Visibility.Collapsed;
+                payablesReceivable.Type = "należność";
+                TypeCheck = true;
+            }
+            else if (RadioB_PR_Payables.IsChecked == true)
+            {
+                Lb_PRTypeError.Visibility = Visibility.Collapsed;
+                payablesReceivable.Type = "zobowiązanie";
+                TypeCheck = true;
+            }
+            else
+            {
+                Lb_PRTypeError.Content = "Dokonaj wyboru";
+                Lb_PRTypeError.Visibility = Visibility.Visible;
+                TypeCheck = false;
+            }
+
+
+            payablesReceivable.Description = TxB_Desc.Text;
+            payablesReceivable.UserID = User_ID;
+            payablesReceivable.Date = DateTime.Now;
+
+
+            if (NameCheck && AmountCheck && TypeCheck == true)
+            {
+
+                try
+                {
+                    using (FinanseEntities db = new FinanseEntities())
+                    {
+                        db.PayablesReceivables.Add(payablesReceivable);
+                        db.SaveChanges();
+                    }
+                    MessageBox.Show("Dodano poprawnie");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    //throw;
+                }
+
+            }
+
+        }
+
+        ///<summary>
+        ///Metoda czyszczaca pola w oknie naleznosci i zaobowiazan
+        /// </summary>
+        public void ClearPR()
+        {
+            TxB_PR_Name.Text = TxB_PR_Amount.Text = TxB_PR_Desc.Text = null;
+            RadioB_PR_Payables.IsChecked = false;
+            RadioB_PR_Receivable.IsChecked = false;
+        }
+
+
+        ///<summary>
+        ///Metoda wyswietlajaca naleznosci i zobowiazania w listview
+        /// </summary>
+        public void ShowPayablesReceivable()
+        {
+            using (FinanseEntities db = new FinanseEntities())
+            {
+                ListViewPR.ItemsSource = db.PayablesReceivables.Where(s => s.UserID == User_ID).ToList();
+                                
+            }
+        }
+
+
+        public void RemovePR()
+        {
+
+            //if (ListViewTransaction.SelectedIndex >= 0)
+            //{
+            //    var item = (ListBox)sender;
+            //    var trans = (Transaction)item.SelectedItem;
+            //    MessageBox.Show("Nazwa: " + trans.Name + " Kwota: " + trans.Amount + " Data: " + trans.Date.ToString("d") + " Opis: " + trans.Description);
+            //}
+
+            if (ListViewPR.SelectedIndex>=0)
+            {
+                //Bt_Remove.IsEnabled =true;
+                var pR = (PayablesReceivable)ListViewPR.SelectedItem;
+                MessageBox.Show(pR.Name);
+            }
+            
+
+            //ListViewPR.Items.Remove(ListViewPR.SelectedItem);
+        }
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="time"></param>
+        /// <param name="rateOfInterest"></param>
+        public void Investment(double amount, int time, double rateOfInterest)
+        {
+            double finalAmount = 0;
+            double tax = 0;
+            double interest = 0;
+            finalAmount = amount+ ((amount * (rateOfInterest/100)) / 12) * time;
+            interest = finalAmount - amount;
+            tax=interest*0.19;
+            finalAmount -= tax;
+
+
+            TxB_SumPaid.Text = Math.Round(finalAmount,2).ToString();
+            TxB_AmountInterest.Text = Math.Round(interest, 2).ToString();
+            TxB_AmountTax.Text = Math.Round(tax, 2).ToString();
+
+        }
+
+        
     }
 }
