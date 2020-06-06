@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Finanse"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="400" Width="300"
+        Title="Logowanie" Height="400" Width="300"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
-    <Grid Background="#4d4dff">
+    <Grid Background="#85bb65">
         <Border
             Background="White"
             CornerRadius="15"

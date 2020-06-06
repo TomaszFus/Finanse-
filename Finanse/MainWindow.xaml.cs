@@ -121,12 +121,15 @@ namespace Finanse
             AddPR();
             ShowPayablesReceivable();
             ClearPR();
+            GetAvailableFunds();
         }
 
 
         private void Bt_Remove_Click(object sender, RoutedEventArgs e)
         {
             RemovePR();
+            ShowPayablesReceivable();
+            GetAvailableFunds();
         }
 
 
@@ -249,7 +252,7 @@ namespace Finanse
                 Lb_AmountError.Visibility = Visibility.Collapsed;
                 try
                 {
-                    transaction.Amount = double.Parse(TxB_Amount.Text);
+                    transaction.Amount = Math.Round(double.Parse(TxB_Amount.Text),2);
                     AmountCheck = true;
                 }
                 catch (Exception ex)
@@ -332,7 +335,9 @@ namespace Finanse
                 using(FinanseEntities db=new FinanseEntities())
                 {
                     user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
-                    Lb_AvFunds.Content = user.AvailableFunds.ToString();
+                    //double tmpAvFunds = Math.Round(user.AvailableFunds, 2);
+                    Lb_AvFunds.Content = Math.Round(user.AvailableFunds, 2); //tmpAvFunds; //user.AvailableFunds.ToString();
+
                 }
             }
             catch (Exception ex)
@@ -402,10 +407,10 @@ namespace Finanse
                 }
             }
 
-            Lb_wydatki.Content = wydatki;
-            Lb_przychody.Content = przychody;
+            Lb_wydatki.Content = Math.Round(wydatki,2);
+            Lb_przychody.Content = Math.Round(przychody,2);
             bilans = przychody - wydatki;
-            Lb_bilans.Content = bilans;
+            Lb_bilans.Content = Math.Round(bilans,2);
         }
 
 
@@ -500,7 +505,43 @@ namespace Finanse
                     //throw;
                 }
 
+                ///////////////////////////////////////
+
+                double _avFunds = user.AvailableFunds;
+                double _amount = payablesReceivable.Amount;
+                double _newAFunds = 0;
+
+
+                if (payablesReceivable.Type == "zobowiązanie")
+                {
+                    _newAFunds = _avFunds + _amount;
+                }
+                else
+                {
+                    _newAFunds = _avFunds - _amount;
+                }
+
+                try
+                {
+                    using (FinanseEntities db = new FinanseEntities())
+                    {
+                        user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
+                        user.AvailableFunds = _newAFunds;
+                        db.SaveChanges();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    //throw;
+                }
+                ///////////////////////////////////////
+
             }
+
+
+
 
         }
 
@@ -512,6 +553,7 @@ namespace Finanse
             TxB_PR_Name.Text = TxB_PR_Amount.Text = TxB_PR_Desc.Text = null;
             RadioB_PR_Payables.IsChecked = false;
             RadioB_PR_Receivable.IsChecked = false;
+
         }
 
 
@@ -531,22 +573,60 @@ namespace Finanse
         public void RemovePR()
         {
 
-            //if (ListViewTransaction.SelectedIndex >= 0)
-            //{
-            //    var item = (ListBox)sender;
-            //    var trans = (Transaction)item.SelectedItem;
-            //    MessageBox.Show("Nazwa: " + trans.Name + " Kwota: " + trans.Amount + " Data: " + trans.Date.ToString("d") + " Opis: " + trans.Description);
-            //}
-
+            
             if (ListViewPR.SelectedIndex>=0)
             {
-                //Bt_Remove.IsEnabled =true;
+                Bt_Remove.IsEnabled = true;
                 var pR = (PayablesReceivable)ListViewPR.SelectedItem;
-                MessageBox.Show(pR.Name);
+                MessageBox.Show(pR.ID_PA.ToString());
+
+
+
+
+                try
+                {
+                    double _avFunds = user.AvailableFunds;
+                    double _amount = pR.Amount;
+                    double _newAFunds = 0;
+
+
+                    if (payablesReceivable.Type == "zobowiązanie")
+                    {
+                        _newAFunds = _avFunds - _amount;
+                    }
+                    else
+                    {
+                        _newAFunds = _avFunds + _amount;
+                    }
+
+
+
+
+                    using (FinanseEntities db= new FinanseEntities())
+                    {
+                        user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
+                        user.AvailableFunds = _newAFunds;
+
+                        var pRToDelete = (from item in db.PayablesReceivables where item.ID_PA == pR.ID_PA select item).First();
+                            if(pRToDelete != null)
+                            {
+                                db.PayablesReceivables.Remove(pRToDelete);
+                                
+                            }
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    //throw;
+                }
+                
+                
             }
             
 
-            //ListViewPR.Items.Remove(ListViewPR.SelectedItem);
+            
         }
 
 

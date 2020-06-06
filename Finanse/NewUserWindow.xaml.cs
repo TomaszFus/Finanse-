@@ -31,6 +31,9 @@ namespace Finanse
         }
 
         User user = new User();
+        List<User> usersList;
+
+
         
         /// <summary>
         /// Funkcja tworząca nowego użytkownika
@@ -74,10 +77,28 @@ namespace Finanse
                 LoginCheck = false;
             }
             else
-            {
-                TxBl_Login.Visibility = Visibility.Collapsed;
-                user.Login = TxB_Login.Text.Trim();
-                LoginCheck = true;
+            {   /////////////
+
+                foreach (var item in usersList)
+                {
+                    if (item.Login == TxB_Login.Text)
+                    {
+                        TxBl_Login.Text = "Podany login jest zajęty";
+                        TxBl_Login.Visibility = Visibility.Visible;
+                        LoginCheck = false;
+                        break;
+                    }
+                    else
+                    {
+                        TxBl_Login.Visibility = Visibility.Collapsed;
+                        user.Login = TxB_Login.Text.Trim();
+                        LoginCheck = true;
+                    }
+
+
+
+                }
+                               
             }
 
             if (String.IsNullOrWhiteSpace(PassB_Password.Password))
@@ -100,6 +121,7 @@ namespace Finanse
                     db.Users.Add(user);
                     db.SaveChanges();
                 }
+                MessageBox.Show("Utworzono użytkownika");
                 Clear();
             }
             
@@ -126,5 +148,12 @@ namespace Finanse
             CreateUser();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            using(FinanseEntities db=new FinanseEntities())
+            {
+                usersList = db.Users.ToList();
+            }
+        }
     }
 }

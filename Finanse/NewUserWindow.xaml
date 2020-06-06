@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Finanse"
         mc:Ignorable="d"
-        Title="NewUserWindow" Height="600" Width="400"
+        Title="Tworzenie użytkownika" Height="600" Width="400"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Grid>
-        <Grid Background="#4d4dff">
+        <Grid Background="#85bb65">
             <Border
             Background="White"
             CornerRadius="15"

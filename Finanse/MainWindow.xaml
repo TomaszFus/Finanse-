@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Finanse"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="950" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="Moje finanse" Height="550" Width="950" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid >
         <!-- menu boczne -->
         <Grid Width="200" HorizontalAlignment="Left" Background="#85bb65">
@@ -59,7 +59,7 @@
 
         <!-- transakcje -->
         <Grid Name="Grid1" Background="Red" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
-            <Grid HorizontalAlignment="Left" Width="400" Background="red">
+            <Grid HorizontalAlignment="Left" Width="400" Background="White">
                 <ListView Name="ListViewTransaction" Margin="15" SelectionChanged="ListViewTransaction_SelectionChanged">
                     <ListView.View>
                         <GridView>
@@ -73,7 +73,7 @@
 
             </Grid>
 
-            <Grid Background="Beige" HorizontalAlignment="Stretch" Margin="400,0,0,0">
+            <Grid Background="White" HorizontalAlignment="Stretch" Margin="400,0,0,0">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -109,8 +109,8 @@
 
         <!-- 2 -->
 
-        <Grid Name="Grid2" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Visible">
-            <Grid HorizontalAlignment="Left" Width="400" Background="Red">
+        <Grid Name="Grid2" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
+            <Grid HorizontalAlignment="Left" Width="400" Background="White">
                 <ListView Name="ListViewPR" Margin="15">
                     <ListView.View>
                         <GridView>
@@ -122,7 +122,7 @@
                     </ListView.View>
                 </ListView>
             </Grid>
-            <Grid HorizontalAlignment="Stretch" Margin="400,0,0,0">
+            <Grid HorizontalAlignment="Stretch" Margin="400,0,0,0" Background="White">
                 <Label Content="Nazwa" HorizontalAlignment="Left" Margin="28,88,0,0" VerticalAlignment="Top"/>
                 <Label Content="Kwota" HorizontalAlignment="Left" Margin="28,163,0,0" VerticalAlignment="Top"/>
                 <Label Content="Opis (opcjonalnie)" HorizontalAlignment="Left" Margin="28,218,0,0" VerticalAlignment="Top"/>
@@ -143,7 +143,7 @@
 
 
         <!-- 3 -->
-        <Grid Name="Grid3" Background="Bisque" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
+        <Grid Name="Grid3" Background="White" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
             <Label Content="Kwota lokaty" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,109,0,0"/>
             <Label Content="Okres lokaty" HorizontalAlignment="Left" Margin="60,155,0,0" VerticalAlignment="Top"/>
             <Label Content="Oprocentowanie" HorizontalAlignment="Left" Margin="60,236,0,0" VerticalAlignment="Top"/>
