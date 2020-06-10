@@ -27,6 +27,7 @@ namespace Finanse
         User user = new User();
         List<Transaction> transactionsList;
         List<Transaction> transactionsMonthList;
+        List<Transaction> transactionsSelMonthList;       
 
 
         public MainWindow(string UserLogin, int UserID)
@@ -93,6 +94,7 @@ namespace Finanse
             SetAvailableFunds();
             GetAvailableFunds();
             Balance(transactionsMonthList);
+            ComboB_Month.SelectedIndex = -1;
 
         }
 
@@ -106,13 +108,23 @@ namespace Finanse
         {
             ShowMonthTransListView();
             Balance(transactionsMonthList);
+            ComboB_Month.SelectedIndex = -1;
         }
 
         private void Bt_transAll_Click(object sender, RoutedEventArgs e)
         {
             ShowAllTransListView();
             Balance(transactionsList);
+            ComboB_Month.SelectedIndex = -1;
         }
+
+        private void ComboB_Month_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = ComboB_Month.SelectedIndex;
+            ShowSelectedMonthTransListView(index);
+
+        }
+
 
         /// <summary>
         /// Metoda wyswitlajaca szczegoly transakcji
@@ -123,9 +135,19 @@ namespace Finanse
             {
                 var item = (ListBox)sender;
                 var trans = (Transaction)item.SelectedItem;
-                MessageBox.Show("Nazwa: " + trans.Name + " Kwota: " + trans.Amount + " Data: " + trans.Date.ToString("d") + " Opis: " + trans.Description);
+                MessageBox.Show("Nazwa: " + trans.Name + "\n" + "Kwota: " + trans.Amount+" zł" + "\n" + "Data: " + trans.Date.ToString("d") + "\n" + "Opis: " + trans.Description);
             }
 
+        }
+
+        private void ListViewPR_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ListViewPR.SelectedIndex >= 0)
+            {
+                var item = (ListBox)sender;
+                var _pr = (PayablesReceivable)item.SelectedItem;
+                MessageBox.Show("Nazwa: " + _pr.Name + "\n" + "Kwota: " + _pr.Amount + " zł" + "\n" + "Data: " + _pr.Date.ToString("d") + "\n" + "Opis: " + _pr.Description);
+            }
         }
 
 
@@ -225,7 +247,7 @@ namespace Finanse
             using (FinanseEntities db = new FinanseEntities())
             {
                 ListViewTransaction.ItemsSource = db.Transactions.Where(s => s.UserID == User_ID).Where(d=>d.Date >=firstDay && d.Date <=lastDay).ToList();
-                transactionsMonthList = db.Transactions.Where(s => s.UserID == User_ID).Where(d => d.Date <= lastDay).Where(k => k.Date <= firstDay).ToList();
+                transactionsMonthList = db.Transactions.Where(s => s.UserID == User_ID).Where(d => d.Date >= firstDay && d.Date <= lastDay).ToList();
             }
 
             
@@ -246,6 +268,90 @@ namespace Finanse
             }
         }
 
+
+        public void TransSelMonth(int m)
+        {
+            var firstDay = new DateTime(DateTime.Today.Year, m, 1);
+            var tmp = firstDay.AddMonths(+1);
+            var lastDay = tmp.AddDays(-1);
+
+            using (FinanseEntities db = new FinanseEntities())
+            {
+                ListViewTransaction.ItemsSource = db.Transactions.Where(s => s.UserID == User_ID).Where(d => d.Date >= firstDay && d.Date <= lastDay).ToList();
+                transactionsSelMonthList = db.Transactions.Where(s => s.UserID == User_ID).Where(d => d.Date >= firstDay && d.Date <= lastDay).ToList();
+            }
+        }
+
+
+        public void ShowSelectedMonthTransListView(int index)
+        {
+            int month = index + 1;
+            switch (month)
+            {
+                case 1:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 2:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 3:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 4:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 5:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 6:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 7:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 8:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 9:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 10:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 11:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+                case 12:
+                    TransSelMonth(month);
+                    Balance(transactionsSelMonthList);
+                    break;
+
+            }
+        }
+
+
         /// <summary>
         /// Metoda dodajaca transakcje
         /// </summary>
@@ -255,92 +361,99 @@ namespace Finanse
             bool AmountCheck = false;
             bool TypeCheck = false;
 
-            
-            if(String.IsNullOrWhiteSpace(TxB_Name.Text))
+            if (user.AvailableFunds>=double.Parse(TxB_Amount.Text) && RadioB_Expense.IsChecked==true)
             {
-                Lb_NameError.Content = "Podaj nazwe transakcji";
-                Lb_NameError.Visibility = Visibility.Visible;
-                NameCheck = false;
-            }
-            else
-            {
-                Lb_NameError.Visibility = Visibility.Collapsed;
-                transaction.Name = TxB_Name.Text.Trim();
-                NameCheck = true;
-            }
 
 
-            if(String.IsNullOrWhiteSpace(TxB_Amount.Text))
-            {
-                Lb_AmountError.Content = "Podaj kwotę transakcji";
-                Lb_AmountError.Visibility = Visibility.Visible;
-                AmountCheck = false;
-            }
-            else
-            {
-                Lb_AmountError.Visibility = Visibility.Collapsed;
-                try
+                if (String.IsNullOrWhiteSpace(TxB_Name.Text))
                 {
-                    transaction.Amount = Math.Round(double.Parse(TxB_Amount.Text),2);
-                    AmountCheck = true;
+                    Lb_NameError.Content = "Podaj nazwe transakcji";
+                    Lb_NameError.Visibility = Visibility.Visible;
+                    NameCheck = false;
                 }
-                catch (Exception ex)
+                else
                 {
-                    Lb_AmountError.Content = ex.Message;
+                    Lb_NameError.Visibility = Visibility.Collapsed;
+                    transaction.Name = TxB_Name.Text.Trim();
+                    NameCheck = true;
+                }
+
+
+                if (String.IsNullOrWhiteSpace(TxB_Amount.Text))
+                {
+                    Lb_AmountError.Content = "Podaj kwotę transakcji";
                     Lb_AmountError.Visibility = Visibility.Visible;
                     AmountCheck = false;
-                    //throw;
                 }
-                
-            }
+                else
+                {
+                    Lb_AmountError.Visibility = Visibility.Collapsed;
+                    try
+                    {
+                        transaction.Amount = Math.Round(double.Parse(TxB_Amount.Text), 2);
+                        AmountCheck = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Lb_AmountError.Content = ex.Message;
+                        Lb_AmountError.Visibility = Visibility.Visible;
+                        AmountCheck = false;
+                        //throw;
+                    }
+
+                }
 
 
-            if(RadioB_Expense.IsChecked==true)
-            {
-                Lb_TypeError.Visibility = Visibility.Collapsed;
-                transaction.Type = "wydatek";
-                TypeCheck = true;
-            }
-            else if(RadioB_Income.IsChecked==true)
-            {
-                Lb_TypeError.Visibility = Visibility.Collapsed;
-                transaction.Type = "przychod";
-                TypeCheck = true;
+                if (RadioB_Expense.IsChecked == true)
+                {
+                    Lb_TypeError.Visibility = Visibility.Collapsed;
+                    transaction.Type = "wydatek";
+                    TypeCheck = true;
+                }
+                else if (RadioB_Income.IsChecked == true)
+                {
+                    Lb_TypeError.Visibility = Visibility.Collapsed;
+                    transaction.Type = "przychod";
+                    TypeCheck = true;
+                }
+                else
+                {
+                    Lb_TypeError.Content = "Dokonaj wyboru";
+                    Lb_TypeError.Visibility = Visibility.Visible;
+                    TypeCheck = false;
+                }
+
+
+                transaction.Description = TxB_Desc.Text;
+                transaction.UserID = User_ID;
+                transaction.Date = DateTime.Now;
+
+
+                if (NameCheck && AmountCheck && TypeCheck == true)
+                {
+
+                    try
+                    {
+                        using (FinanseEntities db = new FinanseEntities())
+                        {
+                            db.Transactions.Add(transaction);
+                            db.SaveChanges();
+                        }
+                        MessageBox.Show("Transakcja dodana");
+                        ClearTrans();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        //throw;
+                    }
+
+                }
             }
             else
             {
-                Lb_TypeError.Content = "Dokonaj wyboru";
-                Lb_TypeError.Visibility = Visibility.Visible;
-                TypeCheck = false;
+                MessageBox.Show("Nie można dodać transakcji, brak wystarczających środków");
             }
-
-
-            transaction.Description = TxB_Desc.Text;
-            transaction.UserID = User_ID;
-            transaction.Date = DateTime.Now;
-
-
-            if(NameCheck && AmountCheck && TypeCheck==true)
-            {
-                
-                try
-                {
-                 using(FinanseEntities db=new FinanseEntities())
-                    {
-                        db.Transactions.Add(transaction);
-                        db.SaveChanges();
-                    }
-                    MessageBox.Show("Transakcja dodana");
-                    ClearTrans();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    //throw;
-                }
-                
-            }
-
         }
 
 
@@ -367,7 +480,7 @@ namespace Finanse
                 {
                     user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
                     //double tmpAvFunds = Math.Round(user.AvailableFunds, 2);
-                    Lb_AvFunds.Content = Math.Round(user.AvailableFunds, 2); //tmpAvFunds; //user.AvailableFunds.ToString();
+                    Lb_AvFunds.Content = Math.Round(user.AvailableFunds, 2)+" zł"; //tmpAvFunds; //user.AvailableFunds.ToString();
 
                 }
             }
@@ -421,7 +534,7 @@ namespace Finanse
         ///<summary>
         /// Metoda wyswietlajca bilans
         /// </summary>
-        public void Balance(List<Transaction> list)
+        public double Balance(List<Transaction> list)
         {
             double wydatki=0;
             double przychody=0;
@@ -438,10 +551,11 @@ namespace Finanse
                 }
             }
 
-            Lb_wydatki.Content = Math.Round(wydatki,2);
-            Lb_przychody.Content = Math.Round(przychody,2);
+            Lb_wydatki.Content = Math.Round(wydatki,2)+" zł";
+            Lb_przychody.Content = Math.Round(przychody,2) + " zł";
             bilans = przychody - wydatki;
-            Lb_bilans.Content = Math.Round(bilans,2);
+            Lb_bilans.Content = Math.Round(bilans,2) + " zł";
+            return bilans;
         }
 
 

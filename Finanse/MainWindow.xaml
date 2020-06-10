@@ -72,6 +72,21 @@
                 </ListView>
                 <Button Name="Bt_transMonth" Content="W tym miesiącu" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Width="90" Click="Bt_transMonth_Click"/>
                 <Button Name="Bt_transAll" Content="Wszystkie" HorizontalAlignment="Left" Margin="134,10,0,0" VerticalAlignment="Top" Width="90" Click="Bt_transAll_Click"/>
+                <ComboBox Name="ComboB_Month" HorizontalAlignment="Left" Margin="254,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboB_Month_SelectionChanged">
+                    <ComboBoxItem>styczeń</ComboBoxItem>
+                    <ComboBoxItem>luty</ComboBoxItem>
+                    <ComboBoxItem>marzec</ComboBoxItem>
+                    <ComboBoxItem>kwiecień</ComboBoxItem>
+                    <ComboBoxItem>maj</ComboBoxItem>
+                    <ComboBoxItem>czerwiec</ComboBoxItem>
+                    <ComboBoxItem>lipiec</ComboBoxItem>
+                    <ComboBoxItem>sierpień</ComboBoxItem>
+                    <ComboBoxItem>wrzesień</ComboBoxItem>
+                    <ComboBoxItem>październik</ComboBoxItem>
+                    <ComboBoxItem>listopad</ComboBoxItem>
+                    <ComboBoxItem>grudzień</ComboBoxItem>
+                    
+                </ComboBox>
 
             </Grid>
 
@@ -113,13 +128,13 @@
 
         <Grid Name="Grid2" HorizontalAlignment="Stretch" Margin="200,72,0,0" Visibility="Hidden">
             <Grid HorizontalAlignment="Left" Width="400" Background="White">
-                <ListView Name="ListViewPR" Margin="15">
+                <ListView Name="ListViewPR" Margin="15" SelectionChanged="ListViewPR_SelectionChanged">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Nazwa" Width="100" DisplayMemberBinding="{Binding Path=Name}"/>
                             <GridViewColumn Header="Kwota" Width="65" DisplayMemberBinding="{Binding Path=Amount}"/>
                             <GridViewColumn Header="Data" Width="70" DisplayMemberBinding="{Binding Path=Date}"/>
-                            <GridViewColumn Header="Rodzaj" Width="60" DisplayMemberBinding="{Binding Path=Type}"/>
+                            <GridViewColumn Header="Rodzaj" Width="90" DisplayMemberBinding="{Binding Path=Type}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
