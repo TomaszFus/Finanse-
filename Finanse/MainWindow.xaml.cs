@@ -26,6 +26,7 @@ namespace Finanse
         PayablesReceivable payablesReceivable = new PayablesReceivable();
         User user = new User();
         List<Transaction> transactionsList;
+        List<Transaction> transactionsMonthList;
 
 
         public MainWindow(string UserLogin, int UserID)
@@ -43,10 +44,11 @@ namespace Finanse
             Grid2.Visibility = Visibility.Hidden;
             Grid3.Visibility = Visibility.Hidden;
 
-            ShowTransListView();
+            //ShowAllTransListView();
             GetAvailableFunds();
-            Balance();
+            ShowMonthTransListView();////test
             ShowPayablesReceivable();
+            Balance(transactionsMonthList);
 
 
 
@@ -86,17 +88,30 @@ namespace Finanse
         private void Bt_AddTrans_Click(object sender, RoutedEventArgs e)
         {
             AddTransaction();
-            ClearTrans();
-            ShowTransListView();
+            //ClearTrans();
+            ShowMonthTransListView();
             SetAvailableFunds();
             GetAvailableFunds();
-            Balance();
+            Balance(transactionsMonthList);
 
         }
 
         private void Bt_ClearTrans_Click(object sender, RoutedEventArgs e)
         {
             ClearTrans();
+        }
+
+
+        private void Bt_transMonth_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMonthTransListView();
+            Balance(transactionsMonthList);
+        }
+
+        private void Bt_transAll_Click(object sender, RoutedEventArgs e)
+        {
+            ShowAllTransListView();
+            Balance(transactionsList);
         }
 
         /// <summary>
@@ -120,7 +135,7 @@ namespace Finanse
         {
             AddPR();
             ShowPayablesReceivable();
-            ClearPR();
+            //ClearPR();
             GetAvailableFunds();
         }
 
@@ -201,14 +216,28 @@ namespace Finanse
 
 
         /////////////////////////////   METODY  ///////////////////////////// 
+        public void ShowMonthTransListView()    ////test
+        {
+            var firstDay = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            var tmp = firstDay.AddMonths(+1);
+            var lastDay = tmp.AddDays(-1);
+            
+            using (FinanseEntities db = new FinanseEntities())
+            {
+                ListViewTransaction.ItemsSource = db.Transactions.Where(s => s.UserID == User_ID).Where(d=>d.Date >=firstDay && d.Date <=lastDay).ToList();
+                transactionsMonthList = db.Transactions.Where(s => s.UserID == User_ID).Where(d => d.Date <= lastDay).Where(k => k.Date <= firstDay).ToList();
+            }
 
+            
+
+        }
 
 
 
         /// <summary>
         /// Metoda wyświetlająca transakcje zalogowanego użytkownika w listview w transakcjach
         /// </summary>
-        public void ShowTransListView()
+        public void ShowAllTransListView()
         {
             using (FinanseEntities db = new FinanseEntities())
             {
@@ -302,6 +331,7 @@ namespace Finanse
                         db.SaveChanges();
                     }
                     MessageBox.Show("Transakcja dodana");
+                    ClearTrans();
                 }
                 catch (Exception ex)
                 {
@@ -322,6 +352,7 @@ namespace Finanse
             TxB_Name.Text = TxB_Amount.Text = TxB_Desc.Text = null;
             RadioB_Expense.IsChecked = false;
             RadioB_Income.IsChecked = false;
+            Lb_AmountError.Visibility = Lb_NameError.Visibility = Lb_TypeError.Visibility = Visibility.Collapsed;
         }
 
 
@@ -390,12 +421,12 @@ namespace Finanse
         ///<summary>
         /// Metoda wyswietlajca bilans
         /// </summary>
-        public void Balance()
+        public void Balance(List<Transaction> list)
         {
             double wydatki=0;
             double przychody=0;
             double bilans = 0;
-            foreach (var item in transactionsList)
+            foreach (var item in list)
             {
                 if(item.Type=="wydatek")
                 {
@@ -498,6 +529,7 @@ namespace Finanse
                         db.SaveChanges();
                     }
                     MessageBox.Show("Dodano poprawnie");
+                    ClearPR();
                 }
                 catch (Exception ex)
                 {
@@ -553,6 +585,7 @@ namespace Finanse
             TxB_PR_Name.Text = TxB_PR_Amount.Text = TxB_PR_Desc.Text = null;
             RadioB_PR_Payables.IsChecked = false;
             RadioB_PR_Receivable.IsChecked = false;
+            Lb_PRAmountError.Visibility = Lb_PRNameError.Visibility = Lb_PRTypeError.Visibility = Visibility.Collapsed;
 
         }
 
@@ -643,7 +676,7 @@ namespace Finanse
         /// <param name="amount"></param>
         /// <param name="time"></param>
         /// <param name="rateOfInterest"></param>
-        public void Investment(double amount, int time, double rateOfInterest)
+        public double Investment(double amount, int time, double rateOfInterest)
         {
             double finalAmount = 0;
             double tax = 0;
@@ -652,12 +685,13 @@ namespace Finanse
             interest = finalAmount - amount;
             tax=interest*0.19;
             finalAmount -= tax;
+            
 
 
             TxB_SumPaid.Text = Math.Round(finalAmount,2).ToString();
             TxB_AmountInterest.Text = Math.Round(interest, 2).ToString();
             TxB_AmountTax.Text = Math.Round(tax, 2).ToString();
-
+            return finalAmount;
         }
 
         
