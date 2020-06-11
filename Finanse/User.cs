@@ -20,12 +20,29 @@ namespace Finanse
             this.PayablesReceivables = new HashSet<PayablesReceivable>();
             this.Transactions = new HashSet<Transaction>();
         }
-    
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca id uzytkownika
+        /// </summary>
         public int ID_User { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca imie uzytkowniak
+        /// </summary>
         public string FirstName { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca nazwisko uzytkowniak
+        /// </summary>
         public string LastName { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca login uzytkowniak
+        /// </summary>
         public string Login { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca haslo uzytkowniak
+        /// </summary>
         public string Password { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca dostepne srodki uzytkowniak
+        /// </summary>
         public double AvailableFunds { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

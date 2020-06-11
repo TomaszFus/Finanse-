@@ -37,7 +37,11 @@ namespace Finanse
             User_ID = UserID;
              
         }
-
+        /// <summary>
+        /// po zaladowaniu okna wyswietlany jest pierwszy grid. wywoływane sa metody odpowiedziale za wyświetlanie dostepnych srodkow, wyswietlenie list i statyskyk
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             
@@ -54,6 +58,11 @@ namespace Finanse
 
 
         }
+        /// <summary>
+        /// zdarzenie wyswietlajace pierwszy grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_page1_Click(object sender, RoutedEventArgs e)
         {
             
@@ -62,6 +71,11 @@ namespace Finanse
             Grid3.Visibility = Visibility.Hidden;
             
         }
+        /// <summary>
+        /// zdarzenie wyswietlajace drugi grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_page2_Click(object sender, RoutedEventArgs e)
         {
             
@@ -69,7 +83,11 @@ namespace Finanse
             Grid1.Visibility = Visibility.Hidden;
             Grid3.Visibility = Visibility.Hidden;
         }
-
+        /// <summary>
+        /// zdarzenie wyswietlajace trzeci grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_page3_Click(object sender, RoutedEventArgs e)
         {
             
@@ -77,7 +95,11 @@ namespace Finanse
             Grid1.Visibility = Visibility.Hidden;
             Grid2.Visibility = Visibility.Hidden;
         }
-
+        /// <summary>
+        /// zdarzenie obslugujace wylogowanie
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_LogOut_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
@@ -86,24 +108,37 @@ namespace Finanse
             
         }
 
+        /// <summary>
+        /// zdarzenie odslugujace dodanie transakcji
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_AddTrans_Click(object sender, RoutedEventArgs e)
         {
             AddTransaction();
             //ClearTrans();
             ShowMonthTransListView();
-            SetAvailableFunds();
             GetAvailableFunds();
             Balance(transactionsMonthList);
             ComboB_Month.SelectedIndex = -1;
 
         }
 
+        /// <summary>
+        /// zdarzenie odslugujace czyszczenie pol dodawania transakcji
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_ClearTrans_Click(object sender, RoutedEventArgs e)
         {
             ClearTrans();
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_transMonth_Click(object sender, RoutedEventArgs e)
         {
             ShowMonthTransListView();
@@ -127,7 +162,7 @@ namespace Finanse
 
 
         /// <summary>
-        /// Metoda wyswitlajaca szczegoly transakcji
+        /// zdarzenie wyswitlajaca szczegoly transakcji
         /// </summary>
         private void ListViewTransaction_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -139,7 +174,11 @@ namespace Finanse
             }
 
         }
-
+        /// <summary>
+        /// zdarzenie wyswietlajace szczegoly naleznosci/zobowiazan
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListViewPR_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ListViewPR.SelectedIndex >= 0)
@@ -152,7 +191,11 @@ namespace Finanse
 
 
 
-
+        /// <summary>
+        /// zdarzenie obslugujace dodanie naleznosci/zobowiazan
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_AddPR_Click(object sender, RoutedEventArgs e)
         {
             AddPR();
@@ -161,7 +204,11 @@ namespace Finanse
             GetAvailableFunds();
         }
 
-
+        /// <summary>
+        /// zdarzenie obslugujace zokonczenie naleznosci/zobowiazan
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_Remove_Click(object sender, RoutedEventArgs e)
         {
             RemovePR();
@@ -170,12 +217,21 @@ namespace Finanse
         }
 
 
-
+        /// <summary>
+        /// zdarzenie obslugujace czyszczenie pol dodawania naleznosci/zobowiazan
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_ClearPR_Click(object sender, RoutedEventArgs e)
         {
             ClearPR();
         }
 
+        /// <summary>
+        /// zdarzenie obslugujace obliczanie kalkulator lokat
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_Calculate_Click(object sender, RoutedEventArgs e)
         {
             double amount=0;
@@ -238,6 +294,10 @@ namespace Finanse
 
 
         /////////////////////////////   METODY  ///////////////////////////// 
+        
+        /// <summary>
+        /// Metoda wyświetlajaca transakcjie z biezacego miesiaca
+        /// </summary>
         public void ShowMonthTransListView()    ////test
         {
             var firstDay = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
@@ -268,7 +328,10 @@ namespace Finanse
             }
         }
 
-
+        /// <summary>
+        /// metoda wyswietlajaca transakcjie z wybranego miesiaca
+        /// </summary>
+        /// <param name="m"></param> paramtrem jest numer wbranego miesiaca 
         public void TransSelMonth(int m)
         {
             var firstDay = new DateTime(DateTime.Today.Year, m, 1);
@@ -282,7 +345,10 @@ namespace Finanse
             }
         }
 
-
+        /// <summary>
+        /// metoda w zaleznosci od wybranego miesiaca  w combobox wywoluje metode wysietlenia transakcji i obliczeniu statystyk
+        /// </summary>
+        /// <param name="index"></param> index wybranego combobox'a
         public void ShowSelectedMonthTransListView(int index)
         {
             int month = index + 1;
@@ -361,8 +427,8 @@ namespace Finanse
             bool AmountCheck = false;
             bool TypeCheck = false;
 
-            if (user.AvailableFunds>=double.Parse(TxB_Amount.Text) && RadioB_Expense.IsChecked==true)
-            {
+            
+            
 
 
                 if (String.IsNullOrWhiteSpace(TxB_Name.Text))
@@ -431,29 +497,32 @@ namespace Finanse
 
                 if (NameCheck && AmountCheck && TypeCheck == true)
                 {
-
+                    if (user.AvailableFunds < double.Parse(TxB_Amount.Text) && RadioB_Expense.IsChecked == true)
+                    {
+                    MessageBox.Show("Nie można dodać transakcji, brak wystarczających środków");
+                    }
+                    else
+                    {
                     try
-                    {
-                        using (FinanseEntities db = new FinanseEntities())
                         {
-                            db.Transactions.Add(transaction);
-                            db.SaveChanges();
-                        }
-                        MessageBox.Show("Transakcja dodana");
+                            using (FinanseEntities db = new FinanseEntities())
+                            {
+                                db.Transactions.Add(transaction);
+                                db.SaveChanges();
+                            }
+                            MessageBox.Show("Transakcja dodana");
+                        SetAvailableFunds();
                         ClearTrans();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            //throw;
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                        //throw;
-                    }
-
                 }
-            }
-            else
-            {
-                MessageBox.Show("Nie można dodać transakcji, brak wystarczających środków");
-            }
+            
+            
         }
 
 
@@ -627,62 +696,69 @@ namespace Finanse
             }
 
 
-            payablesReceivable.Description = TxB_Desc.Text;
+            payablesReceivable.Description = TxB_PR_Desc.Text;
             payablesReceivable.UserID = User_ID;
             payablesReceivable.Date = DateTime.Now;
 
 
             if (NameCheck && AmountCheck && TypeCheck == true)
             {
-
-                try
+                if (user.AvailableFunds < double.Parse(TxB_PR_Amount.Text) && RadioB_PR_Receivable.IsChecked == true)
                 {
-                    using (FinanseEntities db = new FinanseEntities())
-                    {
-                        db.PayablesReceivables.Add(payablesReceivable);
-                        db.SaveChanges();
-                    }
-                    MessageBox.Show("Dodano poprawnie");
-                    ClearPR();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    //throw;
-                }
-
-                ///////////////////////////////////////
-
-                double _avFunds = user.AvailableFunds;
-                double _amount = payablesReceivable.Amount;
-                double _newAFunds = 0;
-
-
-                if (payablesReceivable.Type == "zobowiązanie")
-                {
-                    _newAFunds = _avFunds + _amount;
+                    MessageBox.Show("Nie można dodać, brak wystarczających środków");
                 }
                 else
                 {
-                    _newAFunds = _avFunds - _amount;
-                }
-
-                try
-                {
-                    using (FinanseEntities db = new FinanseEntities())
+                    try
                     {
-                        user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
-                        user.AvailableFunds = _newAFunds;
-                        db.SaveChanges();
+                        using (FinanseEntities db = new FinanseEntities())
+                        {
+                            db.PayablesReceivables.Add(payablesReceivable);
+                            db.SaveChanges();
+                        }
+                        MessageBox.Show("Dodano poprawnie");
+                        ClearPR();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        //throw;
                     }
 
+                    ///////////////////////////////////////
+
+                    double _avFunds = user.AvailableFunds;
+                    double _amount = payablesReceivable.Amount;
+                    double _newAFunds = 0;
+
+
+                    if (payablesReceivable.Type == "zobowiązanie")
+                    {
+                        _newAFunds = _avFunds + _amount;
+                    }
+                    else
+                    {
+                        _newAFunds = _avFunds - _amount;
+                    }
+
+                    try
+                    {
+                        using (FinanseEntities db = new FinanseEntities())
+                        {
+                            user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
+                            user.AvailableFunds = _newAFunds;
+                            db.SaveChanges();
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        //throw;
+                    }
+                    /////////////////////////////////////// 
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    //throw;
-                }
-                ///////////////////////////////////////
+
 
             }
 
@@ -716,7 +792,9 @@ namespace Finanse
             }
         }
 
-
+        /// <summary>
+        /// metoda sluzaca do zakonczenia naleznosci/zobowiazania
+        /// </summary>
         public void RemovePR()
         {
 
@@ -725,51 +803,63 @@ namespace Finanse
             {
                 Bt_Remove.IsEnabled = true;
                 var pR = (PayablesReceivable)ListViewPR.SelectedItem;
-                MessageBox.Show(pR.ID_PA.ToString());
 
 
 
-
-                try
+                if (MessageBox.Show("Zakonczyć?", "Potwierdzenie", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    double _avFunds = user.AvailableFunds;
-                    double _amount = pR.Amount;
-                    double _newAFunds = 0;
-
-
-                    if (payablesReceivable.Type == "zobowiązanie")
+                    if (user.AvailableFunds < pR.Amount && pR.Type == "zobowiązanie")
                     {
-                        _newAFunds = _avFunds - _amount;
+                        MessageBox.Show("Nie można zakończyć, brak wystarczających środków");
                     }
                     else
                     {
-                        _newAFunds = _avFunds + _amount;
-                    }
+                        try
+                        {
+                            double _avFunds = user.AvailableFunds;
+                            double _amount = pR.Amount;
+                            double _newAFunds = 0;
 
 
-
-
-                    using (FinanseEntities db= new FinanseEntities())
-                    {
-                        user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
-                        user.AvailableFunds = _newAFunds;
-
-                        var pRToDelete = (from item in db.PayablesReceivables where item.ID_PA == pR.ID_PA select item).First();
-                            if(pRToDelete != null)
+                            if (payablesReceivable.Type == "zobowiązanie")
                             {
-                                db.PayablesReceivables.Remove(pRToDelete);
-                                
+                                _newAFunds = _avFunds - _amount;
                             }
-                        db.SaveChanges();
+                            else
+                            {
+                                _newAFunds = _avFunds + _amount;
+                            }
+
+
+
+
+                            using (FinanseEntities db = new FinanseEntities())
+                            {
+                                user = db.Users.Where(i => i.ID_User == User_ID).FirstOrDefault();
+                                user.AvailableFunds = _newAFunds;
+
+                                var pRToDelete = (from item in db.PayablesReceivables where item.ID_PA == pR.ID_PA select item).First();
+                                if (pRToDelete != null)
+                                {
+                                    db.PayablesReceivables.Remove(pRToDelete);
+
+                                }
+                                db.SaveChanges();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            //throw;
+                        }
                     }
+                    
+
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message);
-                    //throw;
+
                 }
-                
-                
             }
             
 
@@ -785,11 +875,11 @@ namespace Finanse
 
 
         /// <summary>
-        /// 
+        /// metoda obliczajaca lokate
         /// </summary>
-        /// <param name="amount"></param>
-        /// <param name="time"></param>
-        /// <param name="rateOfInterest"></param>
+        /// <param name="amount"></param> kwota wplacona na lokate
+        /// <param name="time"></param> czas trawania lokaty
+        /// <param name="rateOfInterest"></param> oprocentowanie lokaty
         public double Investment(double amount, int time, double rateOfInterest)
         {
             double finalAmount = 0;

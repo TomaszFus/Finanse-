@@ -14,12 +14,31 @@ namespace Finanse
     
     public partial class PayablesReceivable
     {
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca id nale¿noœci/zobowi¹zania 
+        /// </summary>
         public int ID_PA { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca id u¿ytkownika
+        /// </summary>
         public int UserID { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca nazwê nale¿noœci/zobowi¹zania 
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca kwotê nale¿noœci/zobowi¹zania
+        /// </summary>
         public double Amount { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca datê dodania
+        /// </summary>
         public System.DateTime Date { get; set; }
+        //W³aœciwoœæ przechowuj¹ca opis
         public string Description { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca typ: naleznosc lub zobowiazanie
+        /// </summary>
         public string Type { get; set; }
     
         public virtual User User { get; set; }

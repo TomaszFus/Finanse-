@@ -63,13 +63,22 @@ namespace Finanse
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// zdarzenie obslugujace klikniecie prezycisku tworzenia nowego konta
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_CreateNewUser_Click(object sender, RoutedEventArgs e)
         {
             NewUserWindow newUserWindow = new NewUserWindow();
             newUserWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// zdarzenie obslugujace klikniecie prezycisku logowania
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_LogIn_Click(object sender, RoutedEventArgs e)
         {
             LogIn();

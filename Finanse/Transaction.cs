@@ -14,12 +14,33 @@ namespace Finanse
     
     public partial class Transaction
     {
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca id transakcji
+        /// </summary>
         public int ID_Transaction { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca id uzytkownika
+        /// </summary>
         public int UserID { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca nazwê transakcji
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca kwote transakcji
+        /// </summary>
         public double Amount { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca datê dodania
+        /// </summary>
         public System.DateTime Date { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca opis transakcji
+        /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// W³aœciwoœæ przechowuj¹ca rodzaj transakcji: wydatek lub przychod
+        /// </summary>
         public string Type { get; set; }
     
         public virtual User User { get; set; }
