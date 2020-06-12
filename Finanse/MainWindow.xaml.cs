@@ -40,8 +40,8 @@ namespace Finanse
         /// <summary>
         /// po zaladowaniu okna wyswietlany jest pierwszy grid. wywoływane sa metody odpowiedziale za wyświetlanie dostepnych srodkow, wyswietlenie list i statyskyk
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             
@@ -61,8 +61,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie wyswietlajace pierwszy grid
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_page1_Click(object sender, RoutedEventArgs e)
         {
             
@@ -74,8 +74,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie wyswietlajace drugi grid
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_page2_Click(object sender, RoutedEventArgs e)
         {
             
@@ -86,8 +86,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie wyswietlajace trzeci grid
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_page3_Click(object sender, RoutedEventArgs e)
         {
             
@@ -98,8 +98,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie obslugujace wylogowanie
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_LogOut_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
@@ -111,8 +111,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie odslugujace dodanie transakcji
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_AddTrans_Click(object sender, RoutedEventArgs e)
         {
             AddTransaction();
@@ -127,18 +127,18 @@ namespace Finanse
         /// <summary>
         /// zdarzenie odslugujace czyszczenie pol dodawania transakcji
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_ClearTrans_Click(object sender, RoutedEventArgs e)
         {
             ClearTrans();
         }
 
         /// <summary>
-        /// 
+        /// zdarzenie obslugujace wyswietlenie transakcji z biezacego miesiaca
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_transMonth_Click(object sender, RoutedEventArgs e)
         {
             ShowMonthTransListView();
@@ -146,6 +146,11 @@ namespace Finanse
             ComboB_Month.SelectedIndex = -1;
         }
 
+        /// <summary>
+        /// zdarzenie obslugujace wyswietlenie wszystkich transakcji
+        /// </summary>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_transAll_Click(object sender, RoutedEventArgs e)
         {
             ShowAllTransListView();
@@ -153,6 +158,11 @@ namespace Finanse
             ComboB_Month.SelectedIndex = -1;
         }
 
+        /// <summary>
+        /// zdarzenie obslugujace wyswietlenie transakcji z wybranego miesiaca
+        /// </summary>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void ComboB_Month_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = ComboB_Month.SelectedIndex;
@@ -164,6 +174,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie wyswitlajaca szczegoly transakcji
         /// </summary>
+        /// /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void ListViewTransaction_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ListViewTransaction.SelectedIndex >= 0)
@@ -177,8 +189,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie wyswietlajace szczegoly naleznosci/zobowiazan
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void ListViewPR_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ListViewPR.SelectedIndex >= 0)
@@ -194,8 +206,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie obslugujace dodanie naleznosci/zobowiazan
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_AddPR_Click(object sender, RoutedEventArgs e)
         {
             AddPR();
@@ -207,8 +219,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie obslugujace zokonczenie naleznosci/zobowiazan
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_Remove_Click(object sender, RoutedEventArgs e)
         {
             RemovePR();
@@ -220,8 +232,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie obslugujace czyszczenie pol dodawania naleznosci/zobowiazan
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_ClearPR_Click(object sender, RoutedEventArgs e)
         {
             ClearPR();
@@ -230,8 +242,8 @@ namespace Finanse
         /// <summary>
         /// zdarzenie obslugujace obliczanie kalkulator lokat
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> okresla rodzaj zdarzenia </param>
+        /// <param name="e">Zawiera informacje o stanie i dane zdarzenia</param>
         private void Bt_Calculate_Click(object sender, RoutedEventArgs e)
         {
             double amount=0;
@@ -598,11 +610,13 @@ namespace Finanse
 
         }
 
-        
 
-        ///<summary>
+
+        /// <summary>
         /// Metoda wyswietlajca bilans
         /// </summary>
+        /// <param name="list"></param> przyjmuje liste transakcji
+        /// <returns></returns> zwraca bilans
         public double Balance(List<Transaction> list)
         {
             double wydatki=0;
@@ -880,6 +894,7 @@ namespace Finanse
         /// <param name="amount"></param> kwota wplacona na lokate
         /// <param name="time"></param> czas trawania lokaty
         /// <param name="rateOfInterest"></param> oprocentowanie lokaty
+        /// <returns> zwraca kwotę jaka wyplacimy z lokaty </returns>
         public double Investment(double amount, int time, double rateOfInterest)
         {
             double finalAmount = 0;
